@@ -1,2 +1,2 @@
 # design_patterns
-Sample Codes
+Sample illustratives codes for implmenting different design patterns and some comments about what could go wrong/right.
