@@ -8,6 +8,11 @@
  * 1. It is easy to implement
  * 2. It is to share the object in the program
  *
+ * Destruction of dependent Singletons, use the atexit()
+ *
+ * References:
+ * 1. https://sourcemaking.com/design_patterns/singleton
+ *
  */
 
 #include <iostream>
