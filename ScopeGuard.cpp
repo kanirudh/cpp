@@ -1,6 +1,11 @@
 // This is purely derived from, although I found it so interestig that I to run it and so it makes it wouthwhile to upload to the repo as well
 //  https://github.com/CppCon/CppCon2019/blob/master/Presentations/design_patterns/design_patterns__fedor_pikus__cppcon_2019.pdf
 //
+// Some other references:
+// https://github.com/evgeny-panasyuk/stack_unwinding#d-style-scope-guardsactions
+//
+// TODO
+// 1. Add the uncaught_exception handler for ScopeGuardFail
 
 
 #include <iostream>
