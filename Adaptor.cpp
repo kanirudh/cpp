@@ -1,6 +1,6 @@
 /*
  * This plans to add a wrapper of sort of an existing implementaiton
- * to provide some additional features and clearner api
+ * to provide some additional features and cleaner api
  *
  * https://sourcemaking.com/design_patterns/adapter
  */

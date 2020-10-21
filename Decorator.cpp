@@ -1,7 +1,9 @@
 // Decorator Pattern
-// Although this isn't a very practical example, but this should convery the
-// idea how to use this. I will also try to create an example using
-// static polymorphism with templates
+/*
+ * Some of the use cases I can think of
+ * 1. Lets say we want to add some Pre/Post Condition steps
+ * 2. Take output of existing implrmentation and add to it or modify it
+ */
 
 #include <iostream>
 #include <string>
