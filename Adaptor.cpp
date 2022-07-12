@@ -5,8 +5,9 @@
  * https://sourcemaking.com/design_patterns/adapter
  */
 
-#include <iostream>
 #include <array>
+#include <cassert>
+#include <iostream>
 #include <vector>
 
 /*
@@ -46,16 +47,14 @@ class VariableArray
         m_size++;
     }
 
+    // Returns reference to the last element.
     T& back()
     {
         if (m_size <= MAX_ARRAY_LENGTH)
         {
             return m_array[m_size-1];
         }
-        else
-        {
-            m_vector.back();
-        }
+        return m_vector.back();
     }
 
     void pop_back()
@@ -70,7 +69,6 @@ class VariableArray
         // TODO: In the array case should we call the destuctor
         m_size--;
     }
-
 };
 
 int main()
@@ -80,7 +78,7 @@ int main()
     for (int i = 0;i < 25;i++)
     {
         va.push_back(i);
-    }
+        assert(va.back() == i);
 
     for (int i =0;i < 25;i++)
     {
