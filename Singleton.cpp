@@ -17,49 +17,39 @@
 
 #include <iostream>
 
-class Singleton
-{
-    int value{0};
+class Singleton {
+  int value{0};
 
-    // Constructor is private
-    // People cannot create an object of this class
-    Singleton() {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-    }
-    // This is just to present that idea, this destructor is really called.
-    // Private destructor is allowed, becuase the object is created by the class itself.
-    ~Singleton() {
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-    }
+  // Constructor is private
+  // People cannot create an object of this class
+  Singleton() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
+  // This is just to present that idea, this destructor is really called.
+  // Private destructor is allowed, becuase the object is created by the class
+  // itself.
+  ~Singleton() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
 
-    public:
-    // Delete Copy Constructor and Assignment
-    // Now we have ensured nobody can create a copy of static object
-    Singleton(Singleton const& other) = delete;
-    Singleton& operator=(Singleton const& other) = delete;
+ public:
+  // Delete Copy Constructor and Assignment
+  // Now we have ensured nobody can create a copy of static object
+  Singleton(Singleton const& other) = delete;
+  Singleton& operator=(Singleton const& other) = delete;
 
-    static Singleton& instance()
-    {
-        static Singleton inst;
-        return inst;
-    }
+  static Singleton& instance() {
+    static Singleton inst;
+    return inst;
+  }
 
-    void print() const
-    {
-        std::cout << value << std::endl;
-    }
+  void print() const { std::cout << value << std::endl; }
 };
 
+int main() {
+  // Singleton x;         // This is not allowed
 
-int main()
-{
-    // Singleton x;         // This is not allowed
+  // auto x = new Singleton(); // This is also not allowed
+  std::cout << "Called Main" << std::endl;
 
-    // auto x = new Singleton(); // This is also not allowed
-    std::cout << "Called Main" << std::endl;
+  Singleton::instance().print();
+  std::cout << "Exitting Main" << std::endl;
 
-    Singleton::instance().print();
-    std::cout << "Exitting Main" << std::endl;
-
-    return 0;
+  return 0;
 }
