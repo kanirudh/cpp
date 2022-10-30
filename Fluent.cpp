@@ -1,7 +1,7 @@
 /*
  * Fluent Interface Idiom
  * This is more of an interface rather than a design pattern. The main idea is
- * to achieve method chaining
+ * to achieve method chaining.
  */
 
 #include <iostream>
