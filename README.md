@@ -1,5 +1,8 @@
-# design_patterns
+# C++ snippets
+While this started out as a design pattern repo and extending this will learning small modules and other usefull techniques. Not all of these will be original thoughts but implemented in my style with comments.
+
 Sample illustratives codes for implmenting different design patterns and some comments about what could go wrong/right.
+
 
 ## List of Patterns
 
