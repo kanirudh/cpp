@@ -5,9 +5,9 @@
 #include <array>
 
 struct Stats {
-	int total;
-	int ongoing;
-	int waiting;
+	int total = 0;
+	int ongoing = 0;
+	int waiting = 0;
 	std::array<int, 10> timestamps;
 };
 
@@ -17,11 +17,11 @@ struct  Executor {
 		stats_.value().ongoing++;
 	}
 	int a;
-	Conditional<Stats, EnableStats> stats_;
+	// NOTE: We are disabling empty base class optimization with no_unique_address.
+	[[no_unique_address]] Conditional<Stats, EnableStats> stats_;
 };
 static_assert(sizeof(Executor<true>) == 56);
-// NOTE: There is an additional 4 byte because the compiler is forced by the ABI to assign unique addresses to each member variable and also to generate the required padding.
-static_assert(sizeof(Executor<false>) == 8);
+static_assert(sizeof(Executor<false>) == 4);
 
 void ConditionalTests() {
 	Executor<true> executor_with_stats;
