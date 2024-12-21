@@ -7,15 +7,31 @@ Sample illustratives codes for implmenting different design patterns and some co
 ## List of Patterns
 
 1. Adaptor
-2. Singleton
-3. Factory
-4. Visitor
-5. CRTP
+2. Decorator
+3. Executor
+4. Singleton
+5. Factory
+6. Visitor
+7. CRTP
 
 ### Some good techniques not so much a pattern
 
 1. Fluent
 2. ScopeGuard
+
+
+## List of future ideas to implement and test.
+
+1. SharedPtr
+2. Concurrent Rate Limiter
+3. Task Scheduler
+4. Exponential Backoff
+5. 
+
+
+## Proving concurrency
+
+1. Write test cases for concurrency and test using valgrind/TSAN.
 
 ## References
 https://www.bogotobogo.com/DesignPatterns/introduction.php

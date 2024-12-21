@@ -1,5 +1,15 @@
+/* This is a way to achieve static polymorphism where the interface defined by
+ * the Base Class cannot be modified, while the implemenation is hidden in
+ * Derived class
+ *
+ *
+ * What are the downsides/limitations to CRTP ?
+ *
+ * 1. This can only be exposed a header library because each while buildling a
+ * translation unit the implementation has to be known to the Base class.
+ */
+
 #include <iostream>
-#include <typeinfo>
 
 template <typename Derived>
 class Base {
