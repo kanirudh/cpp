@@ -26,8 +26,7 @@ Sample illustratives codes for implmenting different design patterns and some co
 2. Concurrent Rate Limiter
 3. Task Scheduler
 4. Exponential Backoff
-5. 
-
+5. Concurrent LinkedList
 
 ## Proving concurrency
 
