@@ -1,7 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
-set(CMAKE_C_COMPILER /opt/gcc132/bin/gcc)
-set(CMAKE_CXX_COMPILER /opt/gcc132/bin/g++)
-set(CMAKE_BUILD_RPATH /opt/gcc132/lib64)
+cmake_minimum_required(VERSION 3.31)
 
 project(cpp)
 
