@@ -1,9 +1,3 @@
-
-# Decide on a package manager
-
 mkdir build
+conan install . --profile ./profile --output-folder=build --build=missing
 cmake -B build -G Ninja .
-
-ln -sf build/compile_commands.json compile_commands.json
-
-
