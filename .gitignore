@@ -5,6 +5,7 @@ build
 .cache
 CMakeFiles
 CMakeCache.txt
+CMakeUserPresets.json
 compile_commands.json
 cmake_install.cmake
 
