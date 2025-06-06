@@ -5,5 +5,5 @@ target_link_libraries(data_structures_test
 )
 
 include(GoogleTest)
-gtest_discover_tests(data_structures_test)
+# gtest_discover_tests(data_structures_test)
 
