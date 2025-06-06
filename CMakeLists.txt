@@ -9,8 +9,10 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Show compile commands" FORCE)
 
-add_subdirectory(metaprogramming)
+add_subdirectory(concurrency)
 add_subdirectory(design_patterns)
+add_subdirectory(metaprogramming)
+add_subdirectory(test)
 
 add_custom_target(create_symlink ALL
     COMMAND ${CMAKE_COMMAND} -E create_symlink 
