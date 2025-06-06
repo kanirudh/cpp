@@ -34,3 +34,11 @@ Sample illustratives codes for implmenting different design patterns and some co
 
 ## References
 https://www.bogotobogo.com/DesignPatterns/introduction.php
+
+
+
+## Building
+
+We are using conan2 as the package manager for this repo to get access to various libraries like gtest.
+
+
