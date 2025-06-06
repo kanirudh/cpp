@@ -1,9 +1,9 @@
-#include <iostream>
 #include <thread>
 
 #include "concurrency/concurrent_stack.h"
+#include "gtest/gtest.h"
 
-void ConcurrentStackTest1() {
+TEST(ConcurrentStack, basic) {
   ConcurrentStack<int> stack;
   static constexpr int kNum = 100;
   std::jthread t1([&stack]() {
@@ -27,7 +27,5 @@ void ConcurrentStackTest1() {
     sum += v.value();
     ++popped;
   }
-  if (sum != kNum * (kNum + 1)) {
-    std::cout << "Failed " << sum << std::endl;
-  }
+  EXPECT_EQ(sum, kNum * (kNum + 1));
 }
