@@ -17,14 +17,17 @@ class ConcurrentStack {
     auto *n = new Node(std::forward<U>(value)...);
     auto *h = head.load(std::memory_order_acquire);
     n->next = h;
-    while (not head.compare_exchange_strong(h, n)) {
+    while (not head.compare_exchange_strong(h, n, std::memory_order_release,
+                                            std::memory_order_acquire)) {
       n->next = h;
     }
   }
 
   std::expected<T, std::string> Pop() {
     auto *h = head.load(std::memory_order_acquire);
-    while (h != nullptr and not head.compare_exchange_strong(h, h->next)) {
+    while (h != nullptr and not head.compare_exchange_strong(
+                                h, h->next, std::memory_order_acquire,
+                                std::memory_order_relaxed)) {
     }
     if (h == nullptr) {
       return std::unexpected("Empty");

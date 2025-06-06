@@ -23,6 +23,7 @@ TEST(ConcurrentStack, basic) {
     auto v = stack.Pop();
     while (not v) {
       v = stack.Pop();
+      std::this_thread::yield();
     }
     sum += v.value();
     ++popped;
