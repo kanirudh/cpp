@@ -1,9 +1,6 @@
 # C++ snippets
 While this started out as a design pattern repo and extending this will learning small modules and other usefull techniques. Not all of these will be original thoughts but implemented in my style with comments.
 
-Sample illustratives codes for implmenting different design patterns and some comments about what could go wrong/right.
-
-
 ## List of Patterns
 
 1. Adaptor
@@ -14,19 +11,17 @@ Sample illustratives codes for implmenting different design patterns and some co
 6. Visitor
 7. CRTP
 
-### Some good techniques not so much a pattern
+### Some good techniques which are not so much a pattern
 
 1. Fluent
 2. ScopeGuard
 
-
 ## List of future ideas to implement and test.
 
-1. SharedPtr
+1. Concurrent LinkedList 
 2. Concurrent Rate Limiter
 3. Task Scheduler
 4. Exponential Backoff
-5. Concurrent LinkedList
 
 ## Proving concurrency
 
@@ -35,10 +30,13 @@ Sample illustratives codes for implmenting different design patterns and some co
 ## References
 https://www.bogotobogo.com/DesignPatterns/introduction.php
 
+### Books
 
+* C++ Software Design, Klaus Iglberger
 
 ## Building
 
-We are using conan2 as the package manager for this repo to get access to various libraries like gtest.
+./configure.sh
+ninja -C build
 
 
