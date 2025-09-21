@@ -6,12 +6,12 @@
 TEST(ConcurrentStack, basic) {
   ConcurrentStack<int> stack;
   static constexpr int kNum = 100;
-  std::jthread t1([&stack]() {
+  std::thread t1([&stack]() {
     for (int i = 1; i <= kNum; ++i) {
       stack.Push(i);
     }
   });
-  std::jthread t2([&stack]() {
+  std::thread t2([&stack]() {
     for (int i = 1; i <= kNum; ++i) {
       stack.Push(i);
     }
@@ -29,4 +29,6 @@ TEST(ConcurrentStack, basic) {
     ++popped;
   }
   EXPECT_EQ(sum, kNum * (kNum + 1));
+  t1.join();
+  t2.join();
 }
