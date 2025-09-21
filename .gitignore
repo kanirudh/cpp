@@ -1,6 +1,7 @@
 a.out
 *.exe
 build
+cmake-build-debug
 .vscode
 .cache
 CMakeFiles
