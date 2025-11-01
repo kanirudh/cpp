@@ -8,10 +8,10 @@ public:
 	CircularArray() = default;
 
 	// TODO(anirudh): Should I use std::expected here ?
-	void Push(T&& elem) {
+	void Push(T elem) {
 		if (Full()) return;
 		++size_;
-		elements_[increment(back_)] = std::forward<T>(elem);
+		elements_[increment(back_)] = std::move(elem);
 	}
 
 	// TOOD(anirudh): Is std::expected a more performant choice ? Atleast its more readable.
