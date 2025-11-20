@@ -1,13 +1,13 @@
 /* This is a way to achieve static polymorphism where the interface defined by
- * the Base Class cannot be modified, while the implemenation is hidden in
- * Derived class
- *
+ * the Base Class cannot be modified, while the implementation is hidden in
  *
  * What are the downsides/limitations to CRTP ?
  *
  * 1. This can only be exposed a header library because each while buildling a
  * translation unit the implementation has to be known to the Base class.
  */
+
+#pragma once
 
 #include <iostream>
 
@@ -32,9 +32,3 @@ class Derived : public Base<Derived> {
   void NameImpl() { std::cout << __PRETTY_FUNCTION__ << std::endl; }
   friend Parent;
 };
-
-int main() {
-  Derived x;
-  x.Name();
-  return 0;
-}

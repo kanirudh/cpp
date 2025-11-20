@@ -7,6 +7,12 @@ add_executable(test_data_structures test_circular_array.cc)
 target_include_directories(test_data_structures PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_data_structures PRIVATE GTest::gtest_main)
 
+add_executable(test_crtp test_crtp.cc)
+target_include_directories(test_crtp PRIVATE ${CMAKE_SOURCE_DIR}/)
+target_link_libraries(test_crtp PRIVATE GTest::gtest_main)
+
 include(GoogleTest)
 gtest_discover_tests(test_concurrent_stack)
 gtest_discover_tests(test_data_structures)
+
+add_subdirectory(perf)
