@@ -21,9 +21,9 @@ public:
 		return std::move(elements_[increment(front_)]);
 	}
 
-	bool Full() const noexcept { return size_ == N; }
+	[[nodiscard]] bool Full() const noexcept { return size_ == N; }
 
-	bool Empty() const noexcept { return size_ == 0; }
+	[[nodiscard]] bool Empty() const noexcept { return size_ == 0; }
 
 private:
 	static constexpr size_t increment(size_t& index) { return std::exchange(index, (index + 1) % N); }

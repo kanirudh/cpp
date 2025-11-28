@@ -25,7 +25,7 @@ class Person {
 template <typename Base>
 class LowerCaseDecorator {
  public:
-  LowerCaseDecorator(Base const& base) : base_{base} {}
+  explicit LowerCaseDecorator(Base const& base) : base_{base} {}
 
   std::string Stringify() const {
     auto result = base_.Stringify();
@@ -45,7 +45,7 @@ void LowerCasePrint(T const& obj) {
 }
 
 int main() {
-  auto commander = new Person{"Anirudh", "Varanasi", 24};
+  auto commander = std::make_unique<Person>("Anirudh", "Varanasi", 24);
   LowerCasePrint(*commander);
 
   return 0;

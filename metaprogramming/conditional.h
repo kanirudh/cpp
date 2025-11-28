@@ -3,7 +3,7 @@
 
 /*
  * In the test example one can see benefit of this approach in template
- * metaprogramming where the vvariable can be abstracted away
+ * metaprogramming where the variable can be abstracted away
  */
 template <typename T, bool Enabled>
 struct Conditional {
