@@ -31,8 +31,7 @@ struct Optional {
 
 private:
   static constexpr size_t SIZE = 3;
-  //T value_ : SIZE = SENTINEL;
-  T value_ = SENTINEL;
+  T value_ : SIZE = SENTINEL;
 };
 
 #endif //OPTIONAL_H
