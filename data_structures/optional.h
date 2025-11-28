@@ -15,7 +15,6 @@
 template <typename T, T SENTINEL>
 requires std::integral<std::underlying_type_t<T>>
 struct Optional {
-
   Optional() : value_(SENTINEL) {}
   explicit Optional(T value) : value_(value) {}
 
@@ -31,6 +30,8 @@ struct Optional {
   T value() noexcept { return value_; }
 
 private:
+  static constexpr size_t SIZE = 3;
+  //T value_ : SIZE = SENTINEL;
   T value_ = SENTINEL;
 };
 
