@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.31.6)
 
 project(cpp)
 
@@ -13,9 +13,18 @@ FetchContent_Declare(
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+
+set(BENCHMARK_ENABLE_TESTING off)
+FetchContent_Declare(
+        benchmark
+        GIT_REPOSITORY https://github.com/google/benchmark.git
+        GIT_TAG        v1.9.4  # use desired release tag or commit hash
+)
+
+FetchContent_MakeAvailable(googletest benchmark)
 
 find_package(GTest REQUIRED)
+#find_package(benchmark REQUIRED)
 
 add_subdirectory(concurrency)
 add_subdirectory(data_structures)

@@ -3,6 +3,12 @@
 #include <iostream>
 #include <string>
 
+template <typename T>
+concept StringConvertible = requires (T item)
+{
+  {item.Stringify()} -> std::same_as<std::string>;
+};
+
 class Person {
  public:
   Person(std::string name, std::string address, int age)

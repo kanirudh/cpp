@@ -30,7 +30,7 @@ struct Optional {
   T value() noexcept { return value_; }
 
 private:
-  static constexpr size_t SIZE = 3;
+  static constexpr std::size_t SIZE = 3;
   T value_ : SIZE = SENTINEL;
 };
 
