@@ -1,4 +1,5 @@
 
+#include "gtest/gtest.h"
 #include <algorithm>
 #include <iostream>
 #include <string>
@@ -14,7 +15,7 @@ class Person {
   Person(std::string name, std::string address, int age)
       : name_{std::move(name)}, address_{std::move(address)}, age_{age} {}
 
-  std::string Stringify() const {
+  [[nodiscard]] std::string Stringify() const {
     std::string result;
     result += "Name: " + name_ + " ";
     result += "Address: " + address_ + " ";
@@ -33,7 +34,7 @@ class LowerCaseDecorator {
  public:
   explicit LowerCaseDecorator(Base const& base) : base_{base} {}
 
-  std::string Stringify() const {
+  [[nodiscard]] std::string Stringify() const {
     auto result = base_.Stringify();
     std::transform(result.begin(), result.end(), result.begin(),
                    [](unsigned char c) { return std::tolower(c); });
@@ -50,9 +51,7 @@ void LowerCasePrint(T const& obj) {
   std::cout << temp.Stringify() << std::endl;
 }
 
-int main() {
+TEST(LowerCaseDecorator, Basic) {
   auto commander = std::make_unique<Person>("Anirudh", "Varanasi", 24);
   LowerCasePrint(*commander);
-
-  return 0;
 }

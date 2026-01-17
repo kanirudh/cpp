@@ -9,12 +9,13 @@
 #include <iostream>
 #include <string>
 
-class StringConvertible {
+class StringConvertibleI {
  public:
-  virtual std::string Stringify() const = 0;
+  virtual ~StringConvertibleI() = default;
+  [[nodiscard]] virtual std::string Stringify() const = 0;
 };
 
-class Person : public StringConvertible {
+class Person : public StringConvertibleI {
  public:
   Person(std::string name, std::string address, int age)
       : name_{std::move(name)}, address_{std::move(address)}, age_{age} {}
@@ -33,35 +34,34 @@ class Person : public StringConvertible {
   int age_;
 };
 
-class StringConvertibleDecorator : public StringConvertible {
+class StringConvertibleDecoratorI : public StringConvertibleI {
  public:
-  virtual std::string Stringify() const = 0;
+  [[nodiscard]] std::string Stringify() const override = 0;
 };
 
-class LowerCaseStringDecorator : public StringConvertibleDecorator {
+class LowerCaseStringDecorator final : public StringConvertibleDecoratorI {
  public:
-  LowerCaseStringDecorator(StringConvertible const* component)
+  explicit LowerCaseStringDecorator(StringConvertibleI const* component)
       : component_{component} {}
 
-  std::string Stringify() const override {
+  [[nodiscard]] std::string Stringify() const override {
     auto result = component_->Stringify();
-    std::transform(result.begin(), result.end(), result.begin(),
+    std::ranges::transform(result, result.begin(),
                    [](unsigned char c) { return std::tolower(c); });
     return result;
   }
 
  private:
-  const StringConvertible* component_{nullptr};
+  const StringConvertibleI* component_{nullptr};
 };
 
-void LowerCasePrint(StringConvertible const* obj) {
-  LowerCaseStringDecorator temp(obj);
+void LowerCasePrint(StringConvertibleI const* obj) {
+  const LowerCaseStringDecorator temp(obj);
   std::cout << temp.Stringify() << std::endl;
 }
 
 int main() {
-  auto commander = new Person{"Anirudh", "Varanasi", 24};
-  LowerCasePrint(commander);
-
+  const auto commander = std::make_unique<Person>("Anirudh", "Varanasi", 24);
+  LowerCasePrint(commander.get());
   return 0;
 }
