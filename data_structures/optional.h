@@ -6,6 +6,7 @@
 #define OPTIONAL_H
 
 #include <concepts>
+#include <utility>
 #include <type_traits>
 
 // A bit-packed optional struct

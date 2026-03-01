@@ -1,2 +1,2 @@
-#add_executable(perf_data_structures perf_circular_array.cc)
-#target_link_libraries(perf_data_structures benchmark::benchmark)
+add_executable(perf_data_structures perf_circular_array.cc)
+target_link_libraries(perf_data_structures benchmark::benchmark)

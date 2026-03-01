@@ -35,7 +35,15 @@ class ConcurrentStack {
     return h->value;
   }
 
-  [[gnu::always_inline]] bool empty() const {
+#if defined(_MSC_VER)
+#define ALWAYS_INLINE [[msvc::forceinline]]
+#elif defined(__GNUC__) || defined(__clang__)
+#define ALWAYS_INLINE [[gnu::always_inline]]
+#else
+#define ALWAYS_INLINE inline
+#endif
+
+  ALWAYS_INLINE bool empty() const {
     return head.load(std::memory_order_acquire) == nullptr;
   }
 
