@@ -23,20 +23,28 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest benchmark)
 
-find_package(GTest REQUIRED)
-#find_package(benchmark REQUIRED)
-
 add_subdirectory(concurrency)
 add_subdirectory(data_structures)
 add_subdirectory(design_patterns)
 add_subdirectory(metaprogramming)
 add_subdirectory(test)
 
-add_custom_target(create_symlink ALL
-    COMMAND ${CMAKE_COMMAND} -E create_symlink 
-        ${CMAKE_BINARY_DIR}/compile_commands.json 
-        ${CMAKE_SOURCE_DIR}/compile_commands.json
-    COMMENT "Creating symbolic link for compile_commands.json in the source directory"
-)
+if(WIN32)
+    # On Windows, symlinking compile_commands.json might fail without admin/developer mode
+    # We can use a copy instead for better reliability
+    add_custom_target(create_symlink ALL
+        COMMAND ${CMAKE_COMMAND} -E copy 
+            ${CMAKE_BINARY_DIR}/compile_commands.json 
+            ${CMAKE_SOURCE_DIR}/compile_commands.json
+        COMMENT "Copying compile_commands.json to the source directory"
+    )
+else()
+    add_custom_target(create_symlink ALL
+        COMMAND ${CMAKE_COMMAND} -E create_symlink 
+            ${CMAKE_BINARY_DIR}/compile_commands.json 
+            ${CMAKE_SOURCE_DIR}/compile_commands.json
+        COMMENT "Creating symbolic link for compile_commands.json in the source directory"
+    )
+endif()
 
 enable_testing()

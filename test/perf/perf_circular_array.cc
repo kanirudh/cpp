@@ -10,3 +10,5 @@ static void BM_StringCreation(benchmark::State& state) {
 }
 // Register the function as a benchmark
 BENCHMARK(BM_StringCreation);
+
+BENCHMARK_MAIN();
