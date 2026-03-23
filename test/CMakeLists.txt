@@ -7,7 +7,7 @@ add_executable(test_data_structures test_circular_array.cc test_optional.cc)
 target_include_directories(test_data_structures PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_data_structures PRIVATE GTest::gtest_main)
 
-add_executable(test_metaprogramming test_crtp.cc)
+add_executable(test_metaprogramming test_crtp.cc test_typelist.cpp)
 target_include_directories(test_metaprogramming PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_metaprogramming PRIVATE GTest::gtest_main)
 
