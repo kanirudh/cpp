@@ -11,7 +11,7 @@ add_executable(test_metaprogramming test_crtp.cc)
 target_include_directories(test_metaprogramming PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_metaprogramming PRIVATE GTest::gtest_main)
 
-add_executable(test_design_patterns test_decorator_static.cc)
+add_executable(test_design_patterns test_decorator_static.cc test_mixin.cc)
 target_include_directories(test_design_patterns PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_design_patterns PRIVATE GTest::gtest_main)
 
