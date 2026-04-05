@@ -1,0 +1,1 @@
+add_library(odr_violated Implementation1.cpp Implementation2.cpp)
