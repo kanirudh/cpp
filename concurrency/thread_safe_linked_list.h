@@ -9,7 +9,7 @@ class ThreadSafeLinkedList {
 
   struct Node {
 
-
+    Node* next;
   };
 
 public:
@@ -26,5 +26,6 @@ public:
 
 
 private:
+  Node* head_;
   size_t size_;
 };

@@ -2,7 +2,6 @@
 #include <expected>
 #include <string>
 
-// TODO(anirudh): Support an allocator.
 template <typename T>
 class ConcurrentStack {
   struct Node {

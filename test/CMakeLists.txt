@@ -1,6 +1,6 @@
-add_executable(test_concurrency test_concurrent_stack.cc test_concurrent_rate_limiter.cc)
+add_executable(test_concurrency test_concurrent_stack.cc)
 target_include_directories(test_concurrency PRIVATE ${CMAKE_SOURCE_DIR}/)
-target_link_libraries(test_concurrency PRIVATE GTest::gtest_main concurrency)
+target_link_libraries(test_concurrency PRIVATE GTest::gtest_main)
 
 
 add_executable(test_data_structures test_circular_array.cc test_optional.cc)
