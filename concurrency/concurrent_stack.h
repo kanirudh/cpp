@@ -31,7 +31,9 @@ class ConcurrentStack {
     if (h == nullptr) {
       return std::unexpected("Empty");
     }
-    return h->value;
+    T value = std::move(h->value);
+    delete h;
+    return value;
   }
 
 #if defined(_MSC_VER)

@@ -143,6 +143,33 @@ TEST(ConcurrentStack, NoLostElements_MultiProducer_MultiConsumer) {
   }
 }
 
+// Verify that every popped node is deleted. Uses a Tracked type whose
+// destructor decrements a counter — if nodes are leaked the counter stays > 0.
+TEST(ConcurrentStack, PopDeletesNode) {
+  static std::atomic<int> live_count{0};
+  struct Tracked {
+    Tracked()                          { live_count.fetch_add(1, std::memory_order_relaxed); }
+    Tracked(const Tracked&)            { live_count.fetch_add(1, std::memory_order_relaxed); }
+    Tracked(Tracked&&) noexcept        { live_count.fetch_add(1, std::memory_order_relaxed); }
+    ~Tracked()                         { live_count.fetch_sub(1, std::memory_order_relaxed); }
+  };
+
+  live_count.store(0);
+  {
+    ConcurrentStack<Tracked> stack;
+    stack.Push(Tracked{});
+    stack.Push(Tracked{});
+    stack.Push(Tracked{});
+    EXPECT_EQ(live_count.load(), 3);  // one Tracked alive per node
+
+    [[maybe_unused]] auto a = stack.Pop();
+    [[maybe_unused]] auto b = stack.Pop();
+    [[maybe_unused]] auto c = stack.Pop();
+    EXPECT_EQ(live_count.load(), 3);  // returned values still alive
+  }
+  EXPECT_EQ(live_count.load(), 0);    // everything destroyed — no leaks
+}
+
 // High-contention stress test: every thread interleaves pushes and pops.
 // After all threads finish, drain the stack. Total pops must equal total
 // pushes — no element is created or destroyed spuriously.
@@ -154,7 +181,8 @@ TEST(ConcurrentStack, StressTest_MixedOps) {
   std::atomic<int> push_count{0};
   std::atomic<int> pop_count{0};
 
-  std::vector<std::thread> threads;
+  std::vector<std::jthread> threads;
+  threads.reserve(kThreads);
   for (int t = 0; t < kThreads; ++t) {
     threads.emplace_back([&, t]() {
       for (int i = 0; i < kOpsPerThread; ++i) {
