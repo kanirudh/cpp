@@ -1,18 +1,22 @@
 //
 // Created by Anirudh Agrawal on 5/24/26.
 //
-
-#include <utility>
-
 #ifndef CPP_CUSTOMUNIQUEPTR_H
 #define CPP_CUSTOMUNIQUEPTR_H
+
+#include <utility>
 
 template <typename T>
 class CustomUniquePtr {
 public:
-  CustomUniquePtr(T* ptr) : ptr_(ptr) {}
+  using pointer = T*;
+  using const_pointer = const T*;
+  using reference = T&;
+  using const_reference = const T&;
+
+  CustomUniquePtr(pointer ptr) : ptr_(ptr) {}
   ~CustomUniquePtr() {
-    release();
+    delete ptr_;
   }
 
   CustomUniquePtr(const CustomUniquePtr<T>& other) = delete;
@@ -20,24 +24,34 @@ public:
 
   CustomUniquePtr(CustomUniquePtr<T>&& other) noexcept : ptr_(std::exchange(other.ptr_, nullptr)) {}
   CustomUniquePtr& operator=(CustomUniquePtr<T>&& other) noexcept {
-    ptr_ = std::exchange(other.ptr_, nullptr);
+    if (this != &other) {
+      delete ptr_;
+      ptr_ = std::exchange(other.ptr_, nullptr);
+    }
     return *this;
   }
 
-  explicit operator T&() noexcept { return *ptr_; }
+  explicit operator bool() const noexcept {return ptr_ != nullptr;}
 
-  void reset() noexcept {
-    ptr_ = nullptr;
+  reference operator*() noexcept {return *ptr_;}
+  const_reference operator*() const noexcept {return *ptr_;}
+  pointer operator->() noexcept {return ptr_;}
+  const_pointer operator->() const noexcept {return ptr_;}
+
+  void reset(pointer value = pointer()) noexcept {
+    if (ptr_ != nullptr) {
+      delete ptr_;
+    }
+    ptr_ = value;
   }
-private:
 
   void release() {
-    delete ptr_;
     ptr_ = nullptr;
   }
 
 private:
-  T* ptr_ = nullptr;
+
+  pointer ptr_ = nullptr;
 };
 
 #endif  // CPP_CUSTOMUNIQUEPTR_H
