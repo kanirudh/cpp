@@ -3,7 +3,7 @@ target_include_directories(test_concurrency PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_concurrency PRIVATE GTest::gtest_main)
 
 
-add_executable(test_data_structures test_circular_array.cc test_optional.cc)
+add_executable(test_data_structures test_circular_array.cc test_optional.cc test_custom_unique_ptr.cpp)
 target_include_directories(test_data_structures PRIVATE ${CMAKE_SOURCE_DIR}/)
 target_link_libraries(test_data_structures PRIVATE GTest::gtest_main)
 
