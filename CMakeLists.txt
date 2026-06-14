@@ -23,6 +23,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest benchmark)
 
+enable_testing()
+
 add_subdirectory(concurrency)
 add_subdirectory(data_structures)
 add_subdirectory(design_patterns)
@@ -46,5 +48,3 @@ else()
         COMMENT "Creating symbolic link for compile_commands.json in the source directory"
     )
 endif()
-
-enable_testing()

@@ -8,29 +8,51 @@
 #include <array>
 #include <new>
 #include <algorithm>
+#include <cstddef>
 
 namespace allocator {
 template <typename T>
 class PoolAllocator {
 public:
   using value_type = T;
-  // TODO(anirudh): What else do I need to add here ?
 
-  PoolAllocator() {
+  void init() noexcept {
     auto* current = storage_.data();
     free_ = reinterpret_cast<FreeNode*>(current);
-    for (int i = 0; i < kNum - 1; ++i, current += sizeof(T)) {
+    for (size_t i = 0; i < kNum - 1; ++i, current += kBlockSize) {
       reinterpret_cast<FreeNode*>(current)->next = reinterpret_cast<FreeNode*>(current + kBlockSize);
     }
     reinterpret_cast<FreeNode*>(current)->next = nullptr;
+    available_ = kNum;
   }
-  PoolAllocator(const PoolAllocator&) = delete;
-  PoolAllocator& operator=(const PoolAllocator&) = delete;
-  PoolAllocator(PoolAllocator&&) = delete;
-  PoolAllocator& operator=(PoolAllocator&&) = delete;
+
+  PoolAllocator() noexcept {
+    init();
+  }
+
+  template <typename U>
+  PoolAllocator(const PoolAllocator<U>&) noexcept {
+    init();
+  }
+
+  PoolAllocator(const PoolAllocator&) noexcept {
+    init();
+  }
+
+  PoolAllocator& operator=(const PoolAllocator&) noexcept {
+    return *this;
+  }
+
+  PoolAllocator(PoolAllocator&&) noexcept {
+    init();
+  }
+
+  PoolAllocator& operator=(PoolAllocator&&) noexcept {
+    return *this;
+  }
 
   value_type* allocate(size_t n) {
-    if (n != 1 or free_ == nullptr) throw std::bad_alloc();
+    if (n != 1 || free_ == nullptr) throw std::bad_alloc();
     T* ret = reinterpret_cast<T*>(free_);
     free_ = free_->next;
     --available_;
@@ -45,9 +67,17 @@ public:
     ++available_;
   }
 
+  template <typename U>
+  bool operator==(const PoolAllocator<U>&) const noexcept {
+    return true;
+  }
+
+  template <typename U>
+  bool operator!=(const PoolAllocator<U>&) const noexcept {
+    return false;
+  }
+
 private:
-  // TODO(anirudh): Thread-safety ?
-  // TODO(anirudh): alignment
   struct FreeNode {
     FreeNode* next;
   };
