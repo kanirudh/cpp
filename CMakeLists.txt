@@ -6,22 +6,26 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "Show compile commands" FORCE)
 
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+find_package(GTest CONFIG REQUIRED)
+find_package(benchmark CONFIG REQUIRED)
 
-set(BENCHMARK_ENABLE_TESTING off)
-FetchContent_Declare(
-        benchmark
-        GIT_REPOSITORY https://github.com/google/benchmark.git
-        GIT_TAG        v1.9.4  # use desired release tag or commit hash
-)
+# Workaround: on this toolchain (AppleClang 21 / Xcode 26 beta), declarations
+# built with BENCHMARK_STATIC_DEFINE (no explicit visibility attribute) fail
+# to resolve against libbenchmark.a at link time, even though the symbols are
+# exported with default visibility in the archive. Dropping the define makes
+# benchmark.h apply an explicit visibility("default") attribute instead,
+# which links correctly.
+get_target_property(_benchmark_defs benchmark::benchmark INTERFACE_COMPILE_DEFINITIONS)
+if(_benchmark_defs)
+    list(REMOVE_ITEM _benchmark_defs "BENCHMARK_STATIC_DEFINE")
+    set_target_properties(benchmark::benchmark PROPERTIES INTERFACE_COMPILE_DEFINITIONS "${_benchmark_defs}")
+endif()
+unset(_benchmark_defs)
 
-FetchContent_MakeAvailable(googletest benchmark)
+# Must precede add_subdirectory() below: gtest_discover_tests()/add_test()
+# calls in subdirectories only register with CTest if testing is already
+# enabled when those subdirectories are processed.
+enable_testing()
 
 add_subdirectory(concurrency)
 add_subdirectory(data_structures)
@@ -46,5 +50,3 @@ else()
         COMMENT "Creating symbolic link for compile_commands.json in the source directory"
     )
 endif()
-
-enable_testing()
