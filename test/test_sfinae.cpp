@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <algorithm>
+#include <type_traits>
 #include "gtest/gtest.h"
 
 template <typename T>
@@ -34,13 +36,41 @@ TEST(Sfinae, IsClass) {
   static_assert(!is_class<int>::value, "");
 }
 namespace memfn {
-struct yes { char c; };
-struct no { char c; yes c1; };
 
-template <typename T> yes test(decltype(&T::sort));
-template <typename T> no test(decltype(&T::sort));
+template <typename T> std::true_type test(decltype(&T::Sort));
+template <typename T> std::false_type test(...);
+
+
+template <typename T, typename Specialized>
+struct FastSort {
+  static void Sort(T& t) {
+    std::ranges::sort(t.begin(), t.end());
+  }
+};
+
+template <typename T>
+struct FastSort<T, std::true_type> {
+  static void Sort(T& t) {
+    t.Sort();
+  }
+};
+
+template <typename T>
+void fast_sort_dispatch(T& t) {
+  FastSort<T, decltype(test<T>(nullptr))>::Sort(t);
+}
+
 }
 
 TEST(Sfinae, member_function) {
+  class Anirudh {
+    public:
+      void Sort() {
+        std::cout << "Called" << std::endl;
+      }
+  };
+
+  Anirudh anirudh;
+  memfn::fast_sort_dispatch(anirudh);
 
 }
