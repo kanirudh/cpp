@@ -6,8 +6,11 @@
  */
 
 #include <algorithm>
+#include <cctype>
 #include <iostream>
+#include <memory>
 #include <string>
+#include <utility>
 
 class StringConvertibleI {
  public:

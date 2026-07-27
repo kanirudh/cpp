@@ -2,10 +2,13 @@
 // Created by Anirudh Agrawal on 2/14/26.
 //
 
+// NOLINTBEGIN(misc-include-cleaner) -- only used by the tests commented out
+// below, pending the PoolAllocator sharing fix described in the TODO.
 #include "allocators/PoolAllocator.h"
 #include <vector>
 #include <list>
 #include "gtest/gtest.h"
+// NOLINTEND(misc-include-cleaner)
 
 /*
 TEST(Allocator, PoolAllocatorWithVector) {

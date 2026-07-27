@@ -3,8 +3,10 @@
 //
 
 #include "design_patterns/crtp_new.h"
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <thread>
+#include <variant>
 #include "gtest/gtest.h"
 
 class LoggingAlgo : public AlgoI {

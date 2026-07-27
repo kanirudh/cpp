@@ -3,6 +3,7 @@
 //
 
 #include "data_structures/optional.h"
+#include <cstdint>
 #include "gtest/gtest.h"
 
 namespace {

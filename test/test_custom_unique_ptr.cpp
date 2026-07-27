@@ -3,6 +3,7 @@
 //
 
 #include "data_structures/CustomUniquePtr.h"
+#include <utility>
 #include "gtest/gtest.h"
 
 struct LifeCycleCounter {
