@@ -52,8 +52,16 @@ jobs:
     - name: Install clang-tidy
       run: sudo apt-get update && sudo apt-get install -y clang-tidy-18
 
-    - name: Debug -- print a sample compile command
-      run: python3 -c "import json; db = json.load(open('compile_commands.json')); [print(e['command']) for e in db if 'crtp_new' in e['file']]"
+    - name: Debug -- inspect clang-tidy's resolved invocation
+      run: |
+        echo "--- readlink compile_commands.json ---"
+        readlink -f compile_commands.json
+        echo "--- pwd / realpath . ---"
+        pwd; realpath .
+        echo "--- entries count ---"
+        python3 -c "import json; print(len(json.load(open('compile_commands.json'))))"
+        echo "--- verbose single-file run ---"
+        clang-tidy-18 -p . test/test_crtp_new.cpp --extra-arg=-v 2>&1 | head -60
 
     - name: clang-tidy (misc-include-cleaner)
       run: |
