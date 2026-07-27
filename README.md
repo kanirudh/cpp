@@ -36,7 +36,12 @@ https://www.bogotobogo.com/DesignPatterns/introduction.php
 
 ## Building
 
-./configure.sh
-ninja -C build
+Dependencies (GTest, benchmark) are managed with [Conan](https://conan.io/):
 
+```
+conan install . --build=missing
+cmake --preset conan-release
+cmake --build --preset conan-release
+ctest --preset conan-release
+```
 

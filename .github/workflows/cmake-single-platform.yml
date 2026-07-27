@@ -22,18 +22,25 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install Conan
+      run: pipx install conan
+
+    - name: Detect Conan profile
+      run: conan profile detect --force
+
+    - name: Install dependencies with Conan
+      # Fetches/builds GTest and benchmark (see conanfile.txt) and generates
+      # the CMake toolchain file + 'conan-release' preset consumed below.
+      run: conan install . --build=missing -s build_type=${{env.BUILD_TYPE}}
+
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+      run: cmake --preset conan-release
 
     - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+      run: cmake --build --preset conan-release
 
     - name: Test
-      working-directory: ${{github.workspace}}/build
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: ctest --preset conan-release
 
