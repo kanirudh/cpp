@@ -52,16 +52,12 @@ jobs:
     - name: Install clang-tidy
       run: sudo apt-get update && sudo apt-get install -y clang-tidy-18
 
-    - name: Debug -- inspect clang-tidy's resolved invocation
+    - name: Debug -- compare -p . (symlink) vs -p build/Release (real dir)
       run: |
-        echo "--- readlink compile_commands.json ---"
-        readlink -f compile_commands.json
-        echo "--- pwd / realpath . ---"
-        pwd; realpath .
-        echo "--- entries count ---"
-        python3 -c "import json; print(len(json.load(open('compile_commands.json'))))"
-        echo "--- verbose single-file run ---"
-        clang-tidy-18 -p . test/test_crtp_new.cpp --extra-arg=-v 2>&1 | head -60
+        echo "--- via -p . (symlinked compile_commands.json) ---"
+        clang-tidy-18 -p . test/test_crtp_new.cpp --extra-arg=-v 2>&1 | grep -E '^ /|search starts|error:'
+        echo "--- via -p build/Release (real file, no symlink) ---"
+        clang-tidy-18 -p build/Release test/test_crtp_new.cpp --extra-arg=-v 2>&1 | grep -E '^ /|search starts|error:'
 
     - name: clang-tidy (misc-include-cleaner)
       run: |
