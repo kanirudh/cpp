@@ -52,15 +52,13 @@ jobs:
     - name: Install clang-tidy
       run: sudo apt-get update && sudo apt-get install -y clang-tidy-18
 
-    - name: Debug -- compare -p . (symlink) vs -p build/Release (real dir)
-      run: |
-        echo "--- via -p . (symlinked compile_commands.json) ---"
-        clang-tidy-18 -p . test/test_crtp_new.cpp --extra-arg=-v 2>&1 | grep -E '^ /|search starts|error:'
-        echo "--- via -p build/Release (real file, no symlink) ---"
-        clang-tidy-18 -p build/Release test/test_crtp_new.cpp --extra-arg=-v 2>&1 | grep -E '^ /|search starts|error:'
-
     - name: clang-tidy (misc-include-cleaner)
+      # -p points at the real build/Release dir rather than the
+      # repo-root symlink to compile_commands.json: clang-tidy-18 silently
+      # drops the -I/-isystem flags from every entry when the database is
+      # loaded through a symlink, falling back to bare default include
+      # paths (an LLVM JSONCompilationDatabase quirk, not a project issue).
       run: |
         find . -path ./build -prune -o -path ./out -prune -o \( -name '*.cpp' -o -name '*.cc' \) -print \
-          | xargs clang-tidy-18 -p .
+          | xargs clang-tidy-18 -p build/Release
 
