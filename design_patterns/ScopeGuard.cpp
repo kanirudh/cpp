@@ -8,8 +8,8 @@
 // TODO
 // 1. Add the uncaught_exception handler for ScopeGuardFail
 
-#include <exception>
 #include <iostream>
+#include <stdexcept>
 
 // Classes for demonstration
 class Record {

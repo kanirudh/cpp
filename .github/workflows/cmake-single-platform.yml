@@ -48,11 +48,10 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y clang-tidy
 
     - name: clang-tidy (misc-include-cleaner)
-      # Report-only: there are pre-existing findings elsewhere in the repo
-      # (tracked separately) that haven't been cleaned up yet, so this isn't
-      # a hard gate. Uses the compile_commands.json symlinked to the repo
-      # root by the 'create_symlink' target built above.
+      # Uses the compile_commands.json symlinked to the repo root by the
+      # 'create_symlink' target built above. Blocking: repo is clean as of
+      # this check being added.
       run: |
         find . -path ./build -prune -o -path ./out -prune -o \( -name '*.cpp' -o -name '*.cc' \) -print \
-          | xargs clang-tidy -p . || true
+          | xargs clang-tidy -p .
 

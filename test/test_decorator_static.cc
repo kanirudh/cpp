@@ -1,8 +1,12 @@
 
 #include "gtest/gtest.h"
 #include <algorithm>
+#include <cctype>
+#include <concepts>
 #include <iostream>
+#include <memory>
 #include <string>
+#include <utility>
 
 template <typename T>
 concept StringConvertible = requires (T item)

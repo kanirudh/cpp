@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <string>
 
 class Boat {
  public:
