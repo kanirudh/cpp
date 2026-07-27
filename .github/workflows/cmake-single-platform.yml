@@ -11,6 +11,11 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  # ubuntu-latest defaults to GCC 13, which doesn't implement C++23 "deducing
+  # this" (used in design_patterns/crtp_new.h). GCC 14 is already on the
+  # runner image, just not selected by default -- point at it explicitly.
+  CC: gcc-14
+  CXX: g++-14
 
 jobs:
   build:
