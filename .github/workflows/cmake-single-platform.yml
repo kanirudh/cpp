@@ -12,10 +12,13 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   # ubuntu-latest defaults to GCC 13, which doesn't implement C++23 "deducing
-  # this" (used in design_patterns/crtp_new.h). GCC 14 is already on the
-  # runner image, just not selected by default -- point at it explicitly.
-  CC: gcc-14
-  CXX: g++-14
+  # this" (used in design_patterns/crtp_new.h). Build with Clang 18 instead
+  # (already on the runner image, just not the default) rather than GCC 14:
+  # it also supports deducing-this, and using the same toolchain to compile
+  # and to run clang-tidy avoids compile_commands.json header-search-path
+  # mismatches between a GCC-authored database and a Clang frontend.
+  CC: clang-18
+  CXX: clang++-18
 
 jobs:
   build:
@@ -50,13 +53,14 @@ jobs:
       run: ctest --preset conan-release
 
     - name: Install clang-tidy
-      run: sudo apt-get update && sudo apt-get install -y clang-tidy
+      run: sudo apt-get update && sudo apt-get install -y clang-tidy-18
 
     - name: clang-tidy (misc-include-cleaner)
       # Uses the compile_commands.json symlinked to the repo root by the
-      # 'create_symlink' target built above. Blocking: repo is clean as of
-      # this check being added.
+      # 'create_symlink' target built above. clang-tidy-18 matches the
+      # clang++-18 that produced it. Blocking: repo is clean as of this
+      # check being added.
       run: |
         find . -path ./build -prune -o -path ./out -prune -o \( -name '*.cpp' -o -name '*.cc' \) -print \
-          | xargs clang-tidy -p .
+          | xargs clang-tidy-18 -p .
 
